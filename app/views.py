@@ -31,3 +31,38 @@ def registration(request):
         
     return render(request,'registration.html',d)
 
+
+def login_form(request):
+    if request.method=='POST':
+        username=request.POST['un']
+        password=request.POST['pw']
+
+        AUO=authenticate(username=username,password=password)
+
+        if AUO and AUO.is_active:
+            login(request,AUO)
+            request.session['username']=username
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            return HttpResponse('Invalid Username and Password')
+    return render(request,'login.html')
+
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
+
+def home(request):
+    return render(request,'movies.html')
+
+
+def kid(request):
+    return render(request,'kids.html')
+
+def hanuman(request):
+    return render(request,'hanuman.html')
+
+
+
